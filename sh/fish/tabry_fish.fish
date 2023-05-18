@@ -10,15 +10,21 @@ function tabry_completion_init
   complete -c "$cmd" -n "__fish_tabry_check_args_and_file" -a "(__fish_tabry_completions)"
 end
 
+# _tabry_#{uniq_fn_id}_completions() {
+#   TABRY_IMPORTS_PATH=#{esc import_path} _tabry_#{uniq_fn_id}_completions_internal #{esc tabry_bash_executable} #{tabry_bash_arg && esc(tabry_bash_arg)}
+# }
+
 # return true if tabry only reports commands
 function __fish_tabry_internal_invoke
-  set SCRIPT (status --current-filename)
-  set SCRIPT_DIR (dirname $SCRIPT)
+  # TABRY_IMPORT_PATH_REPLACE (DO NOT REMOVE)
+  # TABRY_EXECUTABLE_REPLACE (DO NOT REMOVE)
+  # TABRY_ARG_REPLACE (DO NOT REMOVE)
 
   # -C "Get cursor position"
   set cursor_position (commandline -C)
   set cmd (commandline)
-  set result ($SCRIPT_DIR/../../bin/tabry-bash "$cmd" "$cursor_position")
+
+  set result ($TABRY_EXECUTABLE $TABRY_ARG "$cmd" "$cursor_position")
   echo $result
 end
 
